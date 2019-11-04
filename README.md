@@ -8,7 +8,7 @@ A Dockerfile linter that you can use to quickly check if your Dockerfile follows
 The linter requires Node.js to run:
 
 ````
-npm install --global dockerfile-linter
+npm install --global dockerlinter
 ````
 
 # Application

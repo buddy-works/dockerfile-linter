@@ -1,5 +1,5 @@
 {
-  "name": "dockerfilelinter",
+  "name": "dockerlinter",
   "version": "1.0.0",
   "description": "Dockerfile linter",
   "main": "./bin/dockerfilelinter.js",
