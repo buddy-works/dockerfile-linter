@@ -1,0 +1,41 @@
+FROM ubuntu:16.04
+
+MAINTAINER Couchbase Docker Team <docker@couchbase.com>
+
+RUN apt-get update && \
+    apt-get install -yq runit wget chrpath tzdata \
+    lsof lshw sysstat net-tools numactl python-httplib2 && \
+    apt-get autoremove && apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ARG CB_VERSION=6.0.2
+ARG CB_RELEASE_URL=https://packages.couchbase.com/releases/6.0.2
+ARG CB_PACKAGE=couchbase-server-enterprise_6.0.2-ubuntu16.04_amd64.deb
+ARG CB_SHA256=1a68803b191492986c21dc6a5abf3dd79d46212a18bb9c80a077fa9eaef5165c
+
+ENV PATH=$PATH:/opt/couchbase/bin:/opt/couchbase/bin/tools:/opt/couchbase/bin/install
+
+RUN groupadd -g 1000 couchbase && useradd couchbase -u 1000 -g couchbase -M
+
+RUN export INSTALL_DONT_START_SERVER=1 && \
+    wget -N --no-verbose $CB_RELEASE_URL/$CB_PACKAGE && \
+    echo "$CB_SHA256  $CB_PACKAGE" | sha256sum -c - && \
+    dpkg -i ./$CB_PACKAGE && rm -f ./$CB_PACKAGE
+
+COPY scripts/run /etc/service/couchbase-server/run
+RUN chown -R couchbase:couchbase /etc/service
+
+COPY scripts/dummy.sh /usr/local/bin/
+RUN ln -s dummy.sh /usr/local/bin/iptables-save && \
+    ln -s dummy.sh /usr/local/bin/lvdisplay && \
+    ln -s dummy.sh /usr/local/bin/vgdisplay && \
+    ln -s dummy.sh /usr/local/bin/pvdisplay
+
+RUN chrpath -r '$ORIGIN/../lib' /opt/couchbase/bin/curl
+
+COPY scripts/entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["couchbase-server"]
+
+EXPOSE 8091 8092 8093 8094 8095 8096 11207 11210 11211 18091 18092 18093 18094 18095 18096
+VOLUME /opt/couchbase/var
