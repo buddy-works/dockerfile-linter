@@ -1,6 +1,6 @@
 {
   "name": "dockerlinter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Dockerfile linter",
   "main": "./bin/dockerfilelinter.js",
   "scripts": {
@@ -9,7 +9,12 @@
     "eslint": "eslint .",
     "version": "echo $npm_package_version"
   },
-  "keywords": ["dockerfile","docker","linter","lint"],
+  "keywords": [
+    "dockerfile",
+    "docker",
+    "linter",
+    "lint"
+  ],
   "author": "Buddy",
   "license": "GPL-3.0-or-later",
   "dependencies": {
@@ -25,7 +30,7 @@
   },
   "bin": "./bin/dockerfilelinter",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/buddy-works/dockerfile-linter.git"
+    "type": "git",
+    "url": "https://github.com/buddy-works/dockerfile-linter.git"
   }
 }
