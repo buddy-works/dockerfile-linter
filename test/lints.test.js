@@ -1598,6 +1598,19 @@ describe('Linting functions', () => {
             lints.ER0013(parsedFile);
             expect(getErrors()).to.deep.equal([]);
         });
+        it('Don\'t add error if packages in pip are using version pining and flag', function () {
+            const parsedFile = {
+                groups: [
+                    {
+                        instruction: 'RUN',
+                        arguments: ['pip install django==1.9 --no-cache-dir'],
+                        linesNumbers: [4]
+                    }
+                ]
+            };
+            lints.ER0013(parsedFile);
+            expect(getErrors()).to.deep.equal([]);
+        });
     });
     describe('Check if packages in npm install are using version pining', () => {
         beforeEach(() => {
