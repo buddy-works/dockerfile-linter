@@ -1,5 +1,5 @@
 ![Docker Linter](assets/images/docker-linter-cover.png)
-# Dockerfile Linter (written in Node.js)
+# Dockerfile Linter (written in Node.js) [![buddy pipeline](https://app.buddy.works/buddy-works/dockerfile-linter/pipelines/pipeline/243198/badge.svg?token=be04e77cb21d0e7e611853e903e521ba233e01d46699a1e6dc00f85a853cbdd6 "buddy pipeline")](https://app.buddy.works/buddy-works/dockerfile-linter/pipelines/pipeline/243198)
 ## Description
 
 A Dockerfile linter that you can use to quickly check if your Dockerfile follows the [best practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) for building efficient Docker images. The tool uses [ShellCheck](https://github.com/koalaman/shellcheck) analysis tool to lint code in `RUN` instructions. Some of the rules were inspired by [Hadolint](https://github.com/hadolint/hadolint) and [Dockerfile reference](https://docs.docker.com/engine/reference/builder/) documentation.
