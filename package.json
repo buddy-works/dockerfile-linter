@@ -19,13 +19,13 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "chalk": "^2.4.2",
-    "commander": "^3.0.1",
+    "commander": "^3.0.2",
     "shellcheck": "^0.3.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^6.3.0",
-    "mocha": "^6.2.0",
+    "eslint": "^6.8.0",
+    "mocha": "^6.2.2",
     "nyc": "^14.1.1"
   },
   "bin": "./bin/dockerfilelinter",
