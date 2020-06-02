@@ -20,7 +20,7 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "commander": "^3.0.2",
-    "shellcheck": "^0.3.0"
+    "shellcheck": "^0.4.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
