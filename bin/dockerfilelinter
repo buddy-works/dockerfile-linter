@@ -11,7 +11,7 @@ function commaSeparatedList(value) {
 }
 
 program
-    .version('1.0.0')
+    .version(require('../package.json').version)
     .option('-f, --file [filepath]', 'file to lint')
     .option('-i, --ignore [rules,...]', 'comma separated list of ignored rules', commaSeparatedList)
     .option('-s, --shellcheck [string]', 'use rules for specific shell[sh,dash,bash,ksh] or disable shellcheck with "none"(default: sh)', 'sh')
