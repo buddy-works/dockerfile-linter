@@ -39,6 +39,14 @@ You can ignore rules for a specific instruction block in the Dockerfile by comme
 FROM node
 ````
 
+# YAML file with ignores
+You can create YAML file `"your dockerfile name".linter.yaml` with list of ignored rules for specific Dockerfile or for all in folder `dockerfilelinter.yaml`. If you put file in the same folder where linting dockerfile is it will be auto-detected, but you can also use flag `-y/--yaml` to specify a path. Example:
+````
+ignored:
+ - ER0012
+ - ER0015
+````
+
 # Rules
 The list of rules implemented.
 

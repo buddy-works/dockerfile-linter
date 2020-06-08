@@ -3,12 +3,10 @@
 const program = require('commander');
 const {lint} = require('../app');
 const fs = require('fs');
+const yaml = require('js-yaml');
+const chalk = require('chalk');
 
 let ignoreList = [];
-
-function commaSeparatedList(value) {
-    return value.split(',');
-}
 
 program
     .version(require('../package.json').version)
@@ -16,16 +14,50 @@ program
     .option('-i, --ignore [rules,...]', 'comma separated list of ignored rules', commaSeparatedList)
     .option('-s, --shellcheck [string]', 'use rules for specific shell[sh,dash,bash,ksh] or disable shellcheck with "none"(default: sh)', 'sh')
     .option('-j, --json', 'return JSON array')
-    .option('-e, --error', 'return error code 1 if there is any errors');
+    .option('-e, --error', 'return error code 1 if there is any errors')
+    .option('-y, --yaml [filepath]', 'YAML file with ignored rules');
 program.parse(process.argv);
+
 if (program.ignore) {
     ignoreList = program.ignore;
 }
 
 if (fs.existsSync(program.file)) {
-    let file = fs.readFileSync(program.file, 'utf8');
-    lint(file, ignoreList, program.json, program.shellcheck, program.error);
+    const dockerFile = fs.readFileSync(program.file, 'utf8');
+
+    if (program.yaml) {
+        readYAML(program.yaml);
+    } else {
+        detectYAML(program.file);
+    }
+
+    lint(dockerFile, ignoreList, program.json, program.shellcheck, program.error);
 } else {
     console.log('Missing  -f/--file [filepath]')
+}
+
+function commaSeparatedList(value) {
+    return value.split(',');
+}
+
+function detectYAML(dockerFilePath) {
+    const yamlFilePaths = [`${dockerFilePath}.linter.yaml`, dockerFilePath.replace(/[^\/]+$/g, 'dockerfilelinter.yaml')];
+
+    yamlFilePaths.forEach((path) => {
+        readYAML(path, true);
+    })
+}
+
+function readYAML(yamlFilePath, detect = false) {
+    if (fs.existsSync(yamlFilePath)){
+        try {
+            const yamlFile = yaml.safeLoad(fs.readFileSync(yamlFilePath, 'utf8'));
+            ignoreList = [...ignoreList, ...yamlFile.ignored]
+        } catch (e) {
+            console.log(chalk.yellowBright(`${detect ? 'Detected invalid' : 'Invalid'} YAML file`));
+        }
+    } else if (!detect) {
+        console.log(chalk.yellowBright('Invalid path to YAML file'));
+    }
 }
 
