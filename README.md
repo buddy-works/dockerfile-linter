@@ -35,7 +35,7 @@ docker run -v /tmp/files/dockerfile:/dockerfilelinter/dockerfile imagename linte
 You can ignore rules for a specific instruction block in the Dockerfile by commenting it. The ignore comment must be applied above the instruction as `# linter ignore=EF0003`. The exceptions are `ED` and `EL` rules. Example:
 
 ````
-# lint ignore=EF0003,EF0004
+# linter ignore=EF0003,EF0004
 FROM node
 ````
 
