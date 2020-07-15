@@ -1848,5 +1848,18 @@ describe('Linting functions', () => {
             lints.EE0001(parsedFile);
             expect(getErrors()).to.deep.equal([]);
         });
+        it('Don\'t add error if port was passed with variable to EXOPSE without default value', function () {
+            const parsedFile = {
+                groups: [
+                    {
+                        instruction: 'EXPOSE',
+                        arguments: ['""'],
+                        linesNumbers: [4]
+                    }
+                ]
+            };
+            lints.EE0001(parsedFile);
+            expect(getErrors()).to.deep.equal([]);
+        });
     });
 });
