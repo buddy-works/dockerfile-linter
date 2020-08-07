@@ -5,6 +5,7 @@ const {lint} = require('../app');
 const fs = require('fs');
 const yaml = require('js-yaml');
 const chalk = require('chalk');
+const {errorCode} = require('../lib/errors');
 
 let ignoreList = [];
 
@@ -34,6 +35,7 @@ if (fs.existsSync(program.file)) {
     lint(dockerFile, ignoreList, program.json, program.shellcheck, program.error);
 } else {
     console.log('Missing  -f/--file [filepath]')
+    errorCode(program.error);
 }
 
 function commaSeparatedList(value) {
@@ -58,6 +60,7 @@ function readYAML(yamlFilePath, detect = false) {
         }
     } else if (!detect) {
         console.log(chalk.yellowBright('Invalid path to YAML file'));
+        errorCode(program.error);
     }
 }
 
