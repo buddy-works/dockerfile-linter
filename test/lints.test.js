@@ -828,6 +828,19 @@ describe('Linting functions', () => {
             lints.EJ0001(parsedFile);
             expect(getErrors()).to.deep.equal([]);
         });
+        it('Don\'t add error if elements in array have commas', function () {
+            const parsedFile = {
+                groups: [
+                    {
+                        instruction: 'RUN',
+                        arguments: ['["test", "test,test", "test,test,test"]'],
+                        linesNumbers: [34]
+                    }
+                ]
+            }
+            lints.EJ0001(parsedFile);
+            expect(getErrors()).to.deep.equal([]);
+        })
     });
     describe('Check if JSON array is suggested', () => {
         beforeEach(() => {
