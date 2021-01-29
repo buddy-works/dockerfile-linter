@@ -833,7 +833,7 @@ describe('Linting functions', () => {
                 groups: [
                     {
                         instruction: 'RUN',
-                        arguments: ['["test", "test,test", "test,test,test"]'],
+                        arguments: ['["test", "test,test" ,"test,test,test"]'],
                         linesNumbers: [34]
                     }
                 ]
