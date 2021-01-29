@@ -17,10 +17,10 @@ npm install --global dockerlinter
 The linter can be used directly from the CLI:
 
 ````
-dockerfilelinter -f <path to Dockerfile>
-dockerfilelinter -f <path to Dockerfile> -s bash #default sh
-dockerfilelinter -f <path to Dockerfile> -s none #disable shellcheck
-dockerfilelinter -f <path to Dockerfile> -i ER0012,ER0015 #coma separated list of ignored rules
+dockerlinter -f <path to Dockerfile>
+dockerlinter -f <path to Dockerfile> -s bash #default sh
+dockerlinter -f <path to Dockerfile> -s none #disable shellcheck
+dockerlinter -f <path to Dockerfile> -i ER0012,ER0015 #coma separated list of ignored rules
 ````
 
 ## Docker
