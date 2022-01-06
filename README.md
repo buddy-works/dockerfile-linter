@@ -22,7 +22,7 @@ dockerfilelinter -f <path to Dockerfile> -s bash #default sh
 dockerfilelinter -f <path to Dockerfile> -s none #disable shellcheck
 dockerfilelinter -f <path to Dockerfile> -i ER0012,ER0015 #coma separated list of ignored rules
 dockerfilelinter -f <path to Dockerfile> -e #return error code 1 for any error
-dockerfilelinter -f <path to Dockerfile> -e warning,error #return error code 1 for errors with specific level[info, warning, error]
+dockerfilelinter -f <path to Dockerfile> -e warning #return error code 1 for errors with level 'warning' or higher(available levels: info, warning, error)
 ````
 
 ## Docker
