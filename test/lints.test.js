@@ -1041,16 +1041,16 @@ describe('Linting functions', () => {
                 groups: [
                     {
                         instruction: 'FROM',
-                        arguments: ['ubuntu:notlatest as build'],
+                        arguments: ['ubuntu:notlatest as build1-a._x'],
                         linesNumbers: [1]
                     },
                     {
                         instruction: 'FROM',
-                        arguments: ['build'],
+                        arguments: ['build1-a._x'],
                         linesNumbers: [2]
                     }
                 ],
-                aliases: [{name: "build", lineNumber: 1}, {name: null, lineNumber: 2}]
+                aliases: [{name: "build1-a._x", lineNumber: 1}, {name: null, lineNumber: 2}]
             };
             lints.EF0004(parsedFile);
             expect(getErrors()).to.deep.equal([]);
