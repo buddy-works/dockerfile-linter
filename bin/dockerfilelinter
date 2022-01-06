@@ -15,11 +15,11 @@ program
     .option('-i, --ignore [rules,...]', 'comma separated list of ignored rules', commaSeparatedList)
     .option('-s, --shellcheck [string]', 'use rules for specific shell[sh,dash,bash,ksh] or disable shellcheck with "none"(default: sh)', 'sh')
     .option('-j, --json', 'return JSON array')
-    .option('-e, --error', 'return error code 1 if there is any errors')
+    .option('-e, --error [levels,...]', 'return error code 1 if there is any errors or specify error levels by passing comma seperated list[info, warning, error]', commaSeparatedList)
     .option('-y, --yaml [filepath]', 'YAML file with ignored rules');
 program.parse(process.argv);
 
-if (program.ignore) {
+if (Array.isArray(program.ignore)) {
     ignoreList = program.ignore;
 }
 
