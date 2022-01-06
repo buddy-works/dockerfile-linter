@@ -51,7 +51,7 @@ describe('Shellcheck functions', () => {
                         lineNumber: 7,
                         message: 'In POSIX sh, echo flags are undefined.',
                         level: ERROR_LEVELS.WARNING,
-                        code:'SC2039'
+                        code:'SC3037'
                     },
                     {
                         lineNumber: 7,
