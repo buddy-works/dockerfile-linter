@@ -1,5 +1,5 @@
-const {expect} = require('chai');
-const {getErrors, addError, cleanErrors} = require('../lib/errors');
+import { beforeEach, describe, expect, it } from 'vitest';
+import { getErrors, addError, cleanErrors } from '../lib/errors.js';
 describe('Errors', () => {
     describe('Get array of errors', () => {
         beforeEach(() => {
@@ -14,9 +14,14 @@ describe('Errors', () => {
         beforeEach(() => {
             cleanErrors();
         });
-        addError(1, 'Test 1');
-        addError(2, 'Test 2');
-        let array = getErrors();
-        expect(array).to.deep.equal([{lineNumber: 1, errorCode: 'Test 1'}, {lineNumber: 2, errorCode: 'Test 2'}])
+        it('Return array with added errors', () => {
+            addError(1, 'Test 1');
+            addError(2, 'Test 2');
+            let array = getErrors();
+            expect(array).to.deep.equal([
+                { lineNumber: 1, errorCode: 'Test 1' },
+                { lineNumber: 2, errorCode: 'Test 2' },
+            ]);
+        });
     });
 });

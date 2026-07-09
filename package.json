@@ -1,37 +1,42 @@
 {
-  "name": "dockerlinter",
-  "version": "1.2.2",
-  "description": "Dockerfile linter",
-  "main": "./bin/dockerfilelinter.js",
-  "scripts": {
-    "test": "mocha",
-    "lint": "node ./bin/dockerfilelinter",
-    "eslint": "eslint .",
-    "version": "echo $npm_package_version",
-    "postinstall": "node ./scripts/fetch-shellcheck.js"
-  },
-  "keywords": [
-    "dockerfile",
-    "docker",
-    "linter",
-    "lint"
-  ],
-  "author": "Buddy",
-  "license": "GPL-3.0-or-later",
-  "dependencies": {
-    "chalk": "2.4.2",
-    "commander": "3.0.2",
-    "js-yaml": "3.15.0"
-  },
-  "devDependencies": {
-    "chai": "4.5.0",
-    "eslint": "8.57.1",
-    "mocha": "9.2.2",
-    "nyc": "15.1.0"
-  },
-  "bin": "./bin/dockerfilelinter",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/buddy-works/dockerfile-linter.git"
-  }
+    "name": "dockerlinter",
+    "version": "1.2.2",
+    "description": "Dockerfile linter",
+    "keywords": [
+        "docker",
+        "dockerfile",
+        "lint",
+        "linter"
+    ],
+    "license": "GPL-3.0-or-later",
+    "author": "Buddy",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/buddy-works/dockerfile-linter.git"
+    },
+    "bin": "./bin/dockerfilelinter.js",
+    "type": "module",
+    "main": "./bin/dockerfilelinter.js",
+    "scripts": {
+        "test": "vitest run",
+        "lint": "node ./bin/dockerfilelinter.js",
+        "oxlint": "oxlint",
+        "fmt": "oxfmt",
+        "fmt:check": "oxfmt --check",
+        "version": "echo $npm_package_version",
+        "postinstall": "node ./scripts/fetch-shellcheck.js"
+    },
+    "dependencies": {
+        "chalk": "5.6.2",
+        "commander": "15.0.0",
+        "js-yaml": "5.2.1"
+    },
+    "devDependencies": {
+        "oxfmt": "0.58.0",
+        "oxlint": "1.73.0",
+        "vitest": "4.1.10"
+    },
+    "engines": {
+        "node": ">=22.12.0"
+    }
 }

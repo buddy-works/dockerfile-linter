@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
-const https = require('https');
-const {spawnSync} = require('child_process');
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+import https from 'https';
+import { spawnSync } from 'child_process';
 
 const VERSION = process.env.SHELLCHECK_VERSION || 'v0.11.0';
 const DOWNLOAD_BASE_URL = 'https://github.com/koalaman/shellcheck/releases/download';
@@ -14,22 +14,22 @@ const BINARIES = {
     linux: {
         platform: 'linux',
         archive: 'tar.xz',
-        architectures: {x64: 'x86_64', arm64: 'aarch64', riscv64: 'riscv64'},
+        architectures: { x64: 'x86_64', arm64: 'aarch64', riscv64: 'riscv64' },
     },
     darwin: {
         platform: 'darwin',
         archive: 'tar.xz',
-        architectures: {x64: 'x86_64', arm64: 'aarch64'},
+        architectures: { x64: 'x86_64', arm64: 'aarch64' },
     },
     win32: {
         platform: '',
         archive: 'zip',
-        architectures: {x64: ''},
+        architectures: { x64: '' },
     },
 };
 
 const binaryName = process.platform === 'win32' ? 'shellcheck.exe' : 'shellcheck';
-const destinationDir = path.join(__dirname, '..', 'node_modules', '.shellcheck');
+const destinationDir = path.join(import.meta.dirname, '..', 'node_modules', '.shellcheck');
 const destination = path.join(destinationDir, binaryName);
 
 function buildURL() {
@@ -39,7 +39,9 @@ function buildURL() {
     }
     const architecture = target.architectures[process.arch];
     if (architecture === undefined) {
-        throw new Error(`Unsupported architecture ${process.arch} for platform ${process.platform}`);
+        throw new Error(
+            `Unsupported architecture ${process.arch} for platform ${process.platform}`,
+        );
     }
     const platformSuffix = target.platform ? `.${target.platform}` : '';
     const architectureSuffix = architecture ? `.${architecture}` : '';
@@ -48,31 +50,39 @@ function buildURL() {
 
 function download(url, file, redirects = 0) {
     return new Promise((resolve, reject) => {
-        https.get(url, {headers: {'User-Agent': 'dockerlinter'}}, (res) => {
-            const status = res.statusCode || 0;
-            if (status >= 300 && status < 400 && res.headers.location) {
-                res.resume();
-                if (redirects >= MAX_REDIRECTS) {
-                    reject(new Error(`Too many redirects for ${url}`));
+        https
+            .get(url, { headers: { 'User-Agent': 'dockerlinter' } }, (res) => {
+                const status = res.statusCode || 0;
+                if (status >= 300 && status < 400 && res.headers.location) {
+                    res.resume();
+                    if (redirects >= MAX_REDIRECTS) {
+                        reject(new Error(`Too many redirects for ${url}`));
+                    } else {
+                        resolve(download(res.headers.location, file, redirects + 1));
+                    }
+                } else if (status !== 200) {
+                    res.resume();
+                    reject(
+                        new Error(
+                            `Download of ${url} failed with status ${status} ${res.statusMessage || ''}`,
+                        ),
+                    );
                 } else {
-                    resolve(download(res.headers.location, file, redirects + 1));
+                    const stream = fs.createWriteStream(file);
+                    stream.on('error', reject);
+                    stream.on('finish', () => stream.close(resolve));
+                    res.on('error', reject);
+                    res.pipe(stream);
                 }
-            } else if (status !== 200) {
-                res.resume();
-                reject(new Error(`Download of ${url} failed with status ${status} ${res.statusMessage || ''}`));
-            } else {
-                const stream = fs.createWriteStream(file);
-                stream.on('error', reject);
-                stream.on('finish', () => stream.close(resolve));
-                res.on('error', reject);
-                res.pipe(stream);
-            }
-        }).on('error', reject);
+            })
+            .on('error', reject);
     });
 }
 
 function extract(archive, directory) {
-    const result = spawnSync('tar', ['-xf', archive, '-C', directory], {stdio: ['ignore', 'ignore', 'inherit']});
+    const result = spawnSync('tar', ['-xf', archive, '-C', directory], {
+        stdio: ['ignore', 'ignore', 'inherit'],
+    });
     if (result.error) {
         throw result.error;
     }
@@ -85,13 +95,15 @@ function extract(archive, directory) {
     ];
     const binary = candidates.find(fs.existsSync);
     if (!binary) {
-        throw new Error(`ShellCheck binary not found in extracted archive (looked at: ${candidates.join(', ')})`);
+        throw new Error(
+            `ShellCheck binary not found in extracted archive (looked at: ${candidates.join(', ')})`,
+        );
     }
     return binary;
 }
 
 function installedVersion(binary) {
-    const result = spawnSync(binary, ['--version'], {encoding: 'utf8'});
+    const result = spawnSync(binary, ['--version'], { encoding: 'utf8' });
     if (result.error || result.status !== 0) {
         return null;
     }
@@ -112,11 +124,11 @@ async function main() {
         console.error(`Downloading ${url}`);
         await download(url, archive);
         const binary = extract(archive, temporaryDir);
-        fs.mkdirSync(destinationDir, {recursive: true});
+        fs.mkdirSync(destinationDir, { recursive: true });
         fs.copyFileSync(binary, destination);
         fs.chmodSync(destination, 0o755);
     } finally {
-        fs.rmSync(temporaryDir, {recursive: true, force: true});
+        fs.rmSync(temporaryDir, { recursive: true, force: true });
     }
 
     const version = installedVersion(destination);

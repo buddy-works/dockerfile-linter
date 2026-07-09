@@ -1,13 +1,16 @@
-const {parseToLines} = require('./lib/parser');
-const {directivesParser, getEscape, parseFromAliases} = require('./lib/directives');
-const {displayErrors} = require('./lib/errors');
-const {groupLinesByInstruction, groupByCommand, replaceArgAndEnv, getInlineIgnores} = require('./lib/groups');
-const lints = require('./lib/lints');
-const {shellCheck} = require('./lib/shellcheck');
+import { parseToLines } from './lib/parser.js';
+import { directivesParser, getEscape, parseFromAliases } from './lib/directives.js';
+import { displayErrors } from './lib/errors.js';
+import {
+    groupLinesByInstruction,
+    groupByCommand,
+    replaceArgAndEnv,
+    getInlineIgnores,
+} from './lib/groups.js';
+import lints from './lib/lints.js';
+import { shellCheck } from './lib/shellcheck.js';
 
-
-function lint(file, ignoreList, json, shell, error) {
-
+export function lint(file, ignoreList, json, shell, error) {
     let lines = parseToLines(file);
     let inlineIgnores = getInlineIgnores(lines);
     let parserDirectives = directivesParser(lines);
@@ -15,30 +18,28 @@ function lint(file, ignoreList, json, shell, error) {
     let groups = groupByCommand(groupLinesByInstruction(lines, escape));
     groups = replaceArgAndEnv(groups, escape);
     let aliases = parseFromAliases(groups);
-    let parsedFile = {lines, parserDirectives, escape, groups, aliases, inlineIgnores};
+    let parsedFile = { lines, parserDirectives, escape, groups, aliases, inlineIgnores };
 
     Object.keys(lints)
         .filter((i) => {
             for (let j = 0; j < ignoreList.length; j++) {
                 if (i === ignoreList[j].toUpperCase()) {
-                    return false
+                    return false;
                 }
             }
-            return true
+            return true;
         })
         .forEach((i) => {
             lints[i](parsedFile);
         });
     if (shell.toLowerCase() === 'none') {
-        displayErrors(json, error)
+        displayErrors(json, error);
     } else {
-        Promise.all(shellCheck(parsedFile, shell, ignoreList)).then(() => {
-            displayErrors(json, error);
-        });
+        Promise.all(shellCheck(parsedFile, shell, ignoreList))
+            .then(() => displayErrors(json, error))
+            .catch((err) => {
+                console.error(err.message);
+                process.exit(2);
+            });
     }
 }
-
-
-module.exports = {
-    lint: lint
-};

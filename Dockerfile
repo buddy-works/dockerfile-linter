@@ -6,8 +6,8 @@ COPY . ./
 
 RUN apk add --no-cache bash xz
 RUN npm install
-RUN ln -s /dockerfilelinter/bin/dockerfilelinter /usr/local/bin/linter
-RUN /bin/bash -c 'chmod +x ./bin/dockerfilelinter'
+RUN ln -s /dockerfilelinter/bin/dockerfilelinter.js /usr/local/bin/linter
+RUN /bin/bash -c 'chmod +x ./bin/dockerfilelinter.js'
 
 CMD ["linter"]
 

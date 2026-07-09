@@ -1,6 +1,6 @@
-const {expect} = require('chai');
-const {parseToLines} = require('../lib/parser');
-const fs = require('fs');
+import { describe, expect, it } from 'vitest';
+import { parseToLines } from '../lib/parser.js';
+import fs from 'fs';
 describe('Parser', () => {
     describe('Parse to lines', () => {
         it('Split file in to array of lines', () => {

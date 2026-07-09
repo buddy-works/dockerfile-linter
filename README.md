@@ -1,55 +1,64 @@
 ![Docker Linter](assets/images/docker-linter-cover.png)
-# Dockerfile Linter (written in Node.js) [![buddy pipeline](https://app.buddy.works/buddy-works/dockerfile-linter/pipelines/pipeline/243198/badge.svg?token=be04e77cb21d0e7e611853e903e521ba233e01d46699a1e6dc00f85a853cbdd6 "buddy pipeline")](https://app.buddy.works/buddy-works/dockerfile-linter/pipelines/pipeline/243198)
+
+# Dockerfile Linter (written in Node.js) [![buddy pipeline](https://app.buddy.works/buddy-works/dockerfile-linter/pipelines/pipeline/243198/badge.svg?token=be04e77cb21d0e7e611853e903e521ba233e01d46699a1e6dc00f85a853cbdd6 'buddy pipeline')](https://app.buddy.works/buddy-works/dockerfile-linter/pipelines/pipeline/243198)
+
 ## Description
 
 A Dockerfile linter that you can use to quickly check if your Dockerfile follows the [best practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) for building efficient Docker images. The tool uses [ShellCheck](https://github.com/koalaman/shellcheck) analysis tool to lint code in `RUN` instructions. Some of the rules were inspired by [Hadolint](https://github.com/hadolint/hadolint) and [Dockerfile reference](https://docs.docker.com/engine/reference/builder/) documentation.
 
 # Installation
+
 The linter requires Node.js to run:
 
-````
+```
 npm install --global dockerlinter
-````
+```
 
 # Application
+
 ## CLI
 
 The linter can be used directly from the CLI:
 
-````
+```
 dockerfilelinter -f <path to Dockerfile>
 dockerfilelinter -f <path to Dockerfile> -s bash #default sh
 dockerfilelinter -f <path to Dockerfile> -s none #disable shellcheck
 dockerfilelinter -f <path to Dockerfile> -i ER0012,ER0015 #coma separated list of ignored rules
 dockerfilelinter -f <path to Dockerfile> -e #return error code 1 for any error
 dockerfilelinter -f <path to Dockerfile> -e warning #return error code 1 for errors with level 'warning' or higher(available levels: info, warning, error)
-````
+```
 
 ## Docker
+
 Docker allows you to run the linter on any type of platform. To mount the file, use the `-v` parameter:
 
-````
+```
 docker build . -t imagename
 docker run -v /tmp/files/dockerfile:/dockerfilelinter/dockerfile imagename linter -f dockerfile
-````
+```
 
 # Inline ignores
+
 You can ignore rules for a specific instruction block in the Dockerfile by commenting it. The ignore comment must be applied above the instruction as `# linter ignore=EF0003`. The exceptions are `ED` and `EL` rules. Example:
 
-````
+```
 # linter ignore=EF0003,EF0004
 FROM node
-````
+```
 
 # YAML file with ignores
+
 You can create YAML file `"your dockerfile name".linter.yaml` with list of ignored rules for specific Dockerfile or for all in folder `dockerfilelinter.yaml`. If you put file in the same folder where linting dockerfile is it will be auto-detected, but you can also use flag `-y/--yaml` to specify a path. Example:
-````
+
+```
 ignored:
  - ER0012
  - ER0015
-````
+```
 
 # Rules
+
 The list of rules implemented.
 
 - Rules with the `E` prefix come from `dockerfilelinter`. Implementation can be found in `lib/lints.js`.
@@ -69,9 +78,8 @@ The list of rules implemented.
 `EA` - Error ADD
 `EJ` - Error JSON
 
-
 | Rules                     | Description                                                                                                       |
-|:--------------------------|:------------------------------------------------------------------------------------------------------------------|
+| :------------------------ | :---------------------------------------------------------------------------------------------------------------- |
 | [EL0001](Rules.md#EL0001) | Invalid line                                                                                                      |
 | [ED0001](Rules.md#ED0001) | All parser directives must be at the very top of a Dockerfile.                                                    |
 | [ED0002](Rules.md#ED0002) | Directive appears more then once.                                                                                 |
@@ -117,18 +125,23 @@ The list of rules implemented.
 | [EI0005](Rules.md#EI0005) | Instructions should be uppercase.                                                                                 |
 
 # Development
+
 You can help us develop linter by suggesting new rules and reporting bugs.
 
 ## Tests
+
 To run unit tests, use the command below:
-````
+
+```
 npm run test
-````
+```
 
 # Maintainer
+
 Docker Linter was created and developed by [Buddy](https://buddy.works?utm_source=github&utm_medium=referral&utm_campaign=dockerlinter&utm_content=readme), creators of delivery automation tools for web and software developers.
 
 # CI/CD
+
 The linter was created to validate the Dockerfile syntax in Continuous Integration and Delivery processes and can be used in any CI/CE tool. Buddy natively supports the linter, allowing you to create a pipeline that will check the syntax, build the Docker image and push it to the registry in a few simple steps:
 
 1. First, define when and for what refs (branchs / tags / pull requests) should the pipeline execute:
