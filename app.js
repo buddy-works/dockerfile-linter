@@ -39,7 +39,7 @@ export function lint(file, ignoreList, json, shell, error) {
             .then(() => displayErrors(json, error))
             .catch((err) => {
                 console.error(err.message);
-                process.exit(2);
+                process.exit(1);
             });
     }
 }
