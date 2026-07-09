@@ -1,10 +1,10 @@
-FROM node:10.16.3-alpine
+FROM node:24-alpine
 
 WORKDIR /dockerfilelinter
 
 COPY . ./
 
-RUN apk add --no-cache bash
+RUN apk add --no-cache bash xz
 RUN npm install
 RUN ln -s /dockerfilelinter/bin/dockerfilelinter /usr/local/bin/linter
 RUN /bin/bash -c 'chmod +x ./bin/dockerfilelinter'

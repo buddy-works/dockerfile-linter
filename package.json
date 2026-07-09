@@ -7,7 +7,8 @@
     "test": "mocha",
     "lint": "node ./bin/dockerfilelinter",
     "eslint": "eslint .",
-    "version": "echo $npm_package_version"
+    "version": "echo $npm_package_version",
+    "postinstall": "node ./scripts/fetch-shellcheck.js"
   },
   "keywords": [
     "dockerfile",
@@ -18,16 +19,15 @@
   "author": "Buddy",
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "chalk": "^2.4.2",
-    "commander": "^3.0.2",
-    "js-yaml": "^3.14.0",
-    "shellcheck": "^1.0.0"
+    "chalk": "2.4.2",
+    "commander": "3.0.2",
+    "js-yaml": "3.15.0"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "eslint": "^8.6.0",
-    "mocha": "^9.1.3",
-    "nyc": "^15.1.0"
+    "chai": "4.5.0",
+    "eslint": "8.57.1",
+    "mocha": "9.2.2",
+    "nyc": "15.1.0"
   },
   "bin": "./bin/dockerfilelinter",
   "repository": {
