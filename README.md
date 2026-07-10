@@ -1,6 +1,6 @@
 ![Docker Linter](assets/images/docker-linter-cover.png)
 
-# Dockerfile Linter (written in Node.js) [![buddy pipeline](https://app.buddy.works/buddy-works/dockerfile-linter/pipelines/pipeline/243198/badge.svg?token=be04e77cb21d0e7e611853e903e521ba233e01d46699a1e6dc00f85a853cbdd6 'buddy pipeline')](https://app.buddy.works/buddy-works/dockerfile-linter/pipelines/pipeline/243198)
+# Dockerfile Linter (written in Node.js) [![buddy pipeline](https://app.buddy.works/buddy-works/dockerfile-linter/pipelines/pipeline/243198/badge.svg?token=29d12b1b433c6edf62b4ac47f4fb60056a7ed5c4c42a0d802e910ca834f22be3 "buddy pipeline")](https://app.buddy.works/buddy-works/dockerfile-linter/pipelines/pipeline/243198)
 
 ## Description
 
